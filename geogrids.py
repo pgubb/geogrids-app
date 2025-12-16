@@ -20,7 +20,15 @@ try:
     # Check if the 'EE_SA_KEY' environment variable exists (Deployment Mode)
     if "EE_SA_KEY" in os.environ:
         service_account_info = json.loads(os.environ["EE_SA_KEY"])
-        creds = service_account.Credentials.from_service_account_info(service_account_info)
+        
+        # FIX: Explicitly define the Earth Engine scope
+        # This prevents the "invalid_scope" error on cloud deployments
+        scopes = ["https://www.googleapis.com/auth/earthengine"]
+        
+        creds = service_account.Credentials.from_service_account_info(
+            service_account_info, 
+            scopes=scopes
+        )
         ee.Initialize(credentials=creds, project="ee-geogrids")
     else:
         # Fallback to default/local authentication (Development Mode)
