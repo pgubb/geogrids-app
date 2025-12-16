@@ -1,4 +1,5 @@
-#GeoGrids: Geospatial Sampling Grid Generator
+
+# GeoGrids: Geospatial Sampling Grid Generator
 
 **GeoGrids** is a Streamlit application designed to streamline the creation of geospatial sampling grids for field surveys and remote sensing analysis. It integrates Google Earth Engine (GEE) to filter grid cells based on real-time satellite imagery and building data.
 
