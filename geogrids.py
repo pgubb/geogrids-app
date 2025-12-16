@@ -8,17 +8,26 @@ from geopy.distance import great_circle
 from pyproj import Geod
 import numpy as np
 import json
+import os
 from datetime import date
+from google.oauth2 import service_account
 
 # ----------------------------------
 # Init
 # ----------------------------------
-# Assumes EE credentials are configured in the environment.
-# If you use a different GEE project, change the project id below.
+# This block handles authentication for both local dev (browser) and cloud deployment (Service Account)
 try:
-    ee.Initialize(project="ee-geogrids")
+    # Check if the 'EE_SA_KEY' environment variable exists (Deployment Mode)
+    if "EE_SA_KEY" in os.environ:
+        service_account_info = json.loads(os.environ["EE_SA_KEY"])
+        creds = service_account.Credentials.from_service_account_info(service_account_info)
+        ee.Initialize(credentials=creds, project="ee-geogrids")
+    else:
+        # Fallback to default/local authentication (Development Mode)
+        ee.Initialize(project="ee-geogrids")
 except Exception as e:
     st.error(f"Earth Engine failed to initialize: {e}")
+    st.info("If running in the cloud, ensure the 'EE_SA_KEY' environment variable is set with your Service Account JSON.")
     st.stop()
 
 WGS84_GEOD = Geod(ellps="WGS84")
