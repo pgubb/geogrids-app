@@ -1,0 +1,9 @@
+streamlit
+geopandas
+earthengine-api
+folium
+streamlit-folium
+shapely
+geopy
+pyproj
+numpy
